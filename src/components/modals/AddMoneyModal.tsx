@@ -112,14 +112,14 @@ export const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose, o
           <DialogHeader>
             <DialogTitle className="text-2xl">Add Money to Wallet</DialogTitle>
             <DialogDescription>
-              Choose your payment method or manage your linked accounts
+              Deposit funds via M-Pesa, Airtel, cards, or bank transfer. Money appears in your wallet balance instantly after payment.
             </DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue="pay" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="pay">Make Payment</TabsTrigger>
-              <TabsTrigger value="linked">Linked Accounts</TabsTrigger>
+              <TabsTrigger value="pay">Deposit Money</TabsTrigger>
+              <TabsTrigger value="linked">Payment Methods</TabsTrigger>
             </TabsList>
 
             <TabsContent value="pay" className="space-y-4 mt-4">
@@ -206,9 +206,9 @@ export const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose, o
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold">Your Linked Accounts</h3>
+                  <h3 className="font-semibold">Your Payment Methods</h3>
                   <p className="text-sm text-muted-foreground">
-                    Manage your connected payment methods
+                    Save payment methods for faster deposits (balance shown on dashboard)
                   </p>
                 </div>
                 <Button

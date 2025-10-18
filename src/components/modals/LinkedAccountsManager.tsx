@@ -8,13 +8,12 @@ import {
   Building2, 
   Star,
   Trash2,
-  Check,
-  RefreshCw
+  Check
 } from 'lucide-react';
 import { formatDistance } from 'date-fns';
 
 export function LinkedAccountsManager() {
-  const { linkedAccounts, isLoading, setPrimaryAccount, removeAccount, syncBalance, isSyncingBalance } = useLinkedAccounts();
+  const { linkedAccounts, isLoading, setPrimaryAccount, removeAccount } = useLinkedAccounts();
 
   if (isLoading) {
     return (
@@ -30,9 +29,9 @@ export function LinkedAccountsManager() {
     return (
       <Card className="border-dashed">
         <CardContent className="p-6 text-center">
-          <p className="text-muted-foreground mb-2">No linked accounts yet</p>
+          <p className="text-muted-foreground mb-2">No linked payment methods yet</p>
           <p className="text-sm text-muted-foreground">
-            Link an account to enable seamless payments
+            Link a payment method for faster deposits to your wallet
           </p>
         </CardContent>
       </Card>
@@ -93,33 +92,12 @@ export function LinkedAccountsManager() {
                       </span>
                     )}
                   </div>
-                  {account.metadata?.balance && (
-                    <div className="mt-2">
-                      <span className="text-lg font-bold text-primary">
-                        KES {account.metadata.balance.toFixed(2)}
-                      </span>
-                      {account.metadata?.last_synced && (
-                        <span className="text-xs text-muted-foreground ml-2">
-                          • Synced {formatDistance(new Date(account.metadata.last_synced), new Date(), { addSuffix: true })}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Saved payment method • Use for quick deposits
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2">
-                {account.account_type === 'mobile_money' && account.phone_number && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => syncBalance({ accountId: account.id, phoneNumber: account.phone_number! })}
-                    disabled={isSyncingBalance}
-                    className="gap-1"
-                  >
-                    <RefreshCw className={`h-3 w-3 ${isSyncingBalance ? 'animate-spin' : ''}`} />
-                    Sync
-                  </Button>
-                )}
                 {!account.is_primary && (
                   <Button
                     size="sm"
