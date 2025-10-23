@@ -142,7 +142,7 @@ export const useUserWalletOperations = () => {
 
       // Check wallet balance
       const { data: wallet, error: walletError } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', user.id)
         .single();
@@ -154,7 +154,7 @@ export const useUserWalletOperations = () => {
 
       // Internal transfer - deduct from wallet
       const { error: deductError } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .update({ balance: wallet.balance - amount })
         .eq('user_id', user.id);
 
@@ -175,6 +175,7 @@ export const useUserWalletOperations = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['central-wallet'] });
       queryClient.invalidateQueries({ queryKey: ['personal-savings'] });
       toast({
         title: "Saved Successfully ✅",
@@ -205,7 +206,7 @@ export const useUserWalletOperations = () => {
 
       // Check wallet balance
       const { data: wallet, error: walletError } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', user.id)
         .single();
@@ -230,6 +231,7 @@ export const useUserWalletOperations = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['central-wallet'] });
       queryClient.invalidateQueries({ queryKey: ['chama-contributions'] });
       toast({
         title: "Contribution Successful ✅",
@@ -260,7 +262,7 @@ export const useUserWalletOperations = () => {
 
       // Check wallet balance
       const { data: wallet, error: walletError } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', user.id)
         .single();
@@ -272,19 +274,19 @@ export const useUserWalletOperations = () => {
 
       // Deduct from sender
       await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .update({ balance: wallet.balance - amount })
         .eq('user_id', user.id);
 
       // Add to recipient
       const { data: recipientWallet } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', recipientId)
         .single();
 
       await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .update({ balance: (recipientWallet?.balance || 0) + amount })
         .eq('user_id', recipientId);
 
@@ -310,6 +312,7 @@ export const useUserWalletOperations = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['central-wallet'] });
       toast({
         title: "Transfer Successful ✅",
         description: "Funds sent successfully",

@@ -158,9 +158,9 @@ serve(async (req) => {
           .single();
 
         if (!txError && transaction?.user_id) {
-          // Get or create user wallet
+          // Get or create user central wallet
           let { data: wallet, error: walletFetchError } = await supabase
-            .from('user_wallets')
+            .from('user_central_wallets')
             .select('*')
             .eq('user_id', transaction.user_id)
             .single();
@@ -171,7 +171,7 @@ serve(async (req) => {
 
           if (!wallet) {
             const { data: newWallet, error: createWalletError } = await supabase
-              .from('user_wallets')
+              .from('user_central_wallets')
               .insert({ user_id: transaction.user_id, balance: 0 })
               .select()
               .single();
@@ -185,7 +185,7 @@ serve(async (req) => {
 
           if (wallet) {
             const { error: walletUpdateError } = await supabase
-              .from('user_wallets')
+              .from('user_central_wallets')
               .update({
                 balance: wallet.balance + netAmount,
                 updated_at: new Date().toISOString(),
@@ -256,9 +256,9 @@ serve(async (req) => {
         });
       }
 
-      // Check user wallet balance
+      // Check user central wallet balance
       const { data: wallet, error: walletError } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', user_id)
         .single();
@@ -345,9 +345,9 @@ serve(async (req) => {
         });
       }
 
-      // Deduct from user wallet
+      // Deduct from user central wallet
       await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .update({ balance: currentBalance - amount })
         .eq('user_id', user_id);
 

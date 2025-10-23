@@ -50,7 +50,7 @@ export const MakeContributionModal: React.FC<MakeContributionModalProps> = ({
     const fetchBalance = async () => {
       if (!user) return;
       const { data } = await supabase
-        .from('user_wallets')
+        .from('user_central_wallets')
         .select('balance')
         .eq('user_id', user.id)
         .single();
